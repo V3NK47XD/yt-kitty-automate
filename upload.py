@@ -8,7 +8,7 @@ def upload_to_filebin(file_path):
     random_text = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(10))
     file_name = os.path.basename(file_path)
 
-    url = f"https://filebin.net/{os.getenv('filebin')}{random_text}/{file_name}"
+    url = f"https://filebin.net/{os.getenv('FILEBIN_KEY')}{random_text}/{file_name}"
 
     try:
         with open(file_path, "rb") as f:

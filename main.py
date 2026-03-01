@@ -20,7 +20,7 @@ def process(folders):
         url = upload_to_filebin(output_video)
 
         send_message_sync(
-    int(os.getenv("channel_id")),
+    int(os.getenv("CHANNEL_ID")),
     f"✅ Processing complete. File at {url}"
 )
     
