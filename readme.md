@@ -1,3 +1,14 @@
+## Setup the project with 
+```bash
+python setup.py
+```
+### Reopen New Terminal to make it work good.
+
+## Install dependencies with 
+```bash
+pip install -r requirements.txt
+```
+
 ## Environment Variables
 
 Create a `.env` file in the project root with the following format:
@@ -17,4 +28,10 @@ FONT_PATH = "path/to/your/font.ttf"
 
 # NVIDIA GPU usage (optional, for combine.py)
 NVIDIA_GPU = False
+```
+
+
+## Run the bot with 
+```bash
+python main.py
 ```
