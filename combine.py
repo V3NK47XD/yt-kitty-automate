@@ -1,6 +1,7 @@
 def combine_buffer(folder):
     import os
     import ffmpeg
+    from dotenv import load_dotenv
 
     BUFFER_FOLDER = os.path.join("buffer", folder)
     OUTPUT_FILE = f"combined_{folder}.mp4"
@@ -60,13 +61,17 @@ def combine_buffer(folder):
         streams.extend([v, a])
 
     # CONCAT (now ALWAYS safe)
+    if os.getenv("NVIDIA_GPU", "False").lower() == "true":
+        gpu_codec = "h264_nvenc"
+    else:
+        gpu_codec = "libx264"
     joined = (
         ffmpeg
         .concat(*streams, v=1, a=1)
         .output(
             OUTPUT_FILE,
             #vcodec="libx264",
-            vcodec="h264_nvenc",
+            vcodec=gpu_codec,
             acodec="aac",
             pix_fmt="yuv420p"
         )

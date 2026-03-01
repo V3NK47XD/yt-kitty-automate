@@ -172,13 +172,17 @@ def add_text_to_video(input_video, texts, times):
             fontcolor="white"
         )
     )
-
+    if os.getenv("NVIDIA_GPU", "False").lower() == "true":
+        gpu_codec = "h264_nvenc"
+    else:
+        gpu_codec = "libx264"
+        
     out = ffmpeg.output(
         video,
         inp.audio,              # 🔥 audio explicitly mapped
         output_video,
         #vcodec="libx264",
-        vcodec="h264_nvenc",
+        vcodec=gpu_codec,
         acodec="aac",
         audio_bitrate="192k",
         pix_fmt="yuv420p"
