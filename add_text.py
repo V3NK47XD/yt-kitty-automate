@@ -6,6 +6,9 @@ def get_font():
 
     # 1. Try .env
     font = os.getenv("FONT_PATH")
+    if font:
+        font = font.strip('"').strip("'").strip()
+        font = font.replace("\\", "/")  # normalize backslashes
     if font and os.path.isfile(font):
         return font
 
@@ -176,7 +179,7 @@ def add_text_to_video(input_video, texts, times):
         gpu_codec = "h264_nvenc"
     else:
         gpu_codec = "libx264"
-        
+
     out = ffmpeg.output(
         video,
         inp.audio,              # 🔥 audio explicitly mapped
