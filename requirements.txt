@@ -1,0 +1,5 @@
+requests
+discord.py
+instaloader
+ffmpeg-python
+python-dotenv
