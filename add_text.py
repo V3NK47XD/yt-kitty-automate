@@ -1,13 +1,52 @@
-from datetime import datetime
 
+def get_font():
+    import os
+    import platform
+    import subprocess
+
+    # 1. Try .env
+    font = os.getenv("FONT_PATH")
+    if font and os.path.isfile(font):
+        return font
+
+    # 2. Try fc-match (Linux/macOS)
+    try:
+        result = subprocess.run(
+            ["fc-match", "--format=%{file}", "sans-serif"],
+            capture_output=True, text=True
+        )
+        path = result.stdout.strip()
+        if path and os.path.isfile(path):
+            return path
+    except Exception:
+        pass
+
+    # 3. Try common OS font dirs
+    system = platform.system()
+    if system == "Windows":
+        font_dir = os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "Fonts")
+    elif system == "Darwin":
+        font_dir = "/Library/Fonts"
+    else:
+        font_dir = "/usr/share/fonts"
+
+    for root, _, files in os.walk(font_dir):
+        for f in files:
+            if f.lower().endswith(".ttf"):
+                return os.path.join(root, f)
+
+    # 4. Give up, let FFmpeg use its default
+    return None
 
 def add_text_to_video(input_video, texts, times):
     import os
     import ffmpeg
     from datetime import datetime
+    from dotenv import load_dotenv
+
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_video = f"output_{now}.mp4"
-    font = r"C:\Users\VenkatPrashad\opera\OpenSansExtraBold.ttf"
+    font = get_font()
     size = 60
     border = 4
 
