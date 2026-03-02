@@ -4,15 +4,20 @@ def get_font():
     import platform
     import subprocess
 
-    # 1. Try .env
+    # 1️⃣ Try .env (supports relative path)
     font = os.getenv("FONT_PATH")
     if font:
         font = font.strip('"').strip("'").strip()
-        font = font.replace("\\", "/")  # normalize backslashes
-    if font and os.path.isfile(font):
-        return font
+        font = font.replace("\\", "/")
 
-    # 2. Try fc-match (Linux/macOS)
+        # Convert relative → absolute
+        if not os.path.isabs(font):
+            font = os.path.abspath(font)
+
+        if os.path.isfile(font):
+            return font
+
+    # 2️⃣ Try fc-match (Linux/macOS)
     try:
         result = subprocess.run(
             ["fc-match", "--format=%{file}", "sans-serif"],
@@ -24,7 +29,7 @@ def get_font():
     except Exception:
         pass
 
-    # 3. Try common OS font dirs
+    # 3️⃣ Try common OS font dirs
     system = platform.system()
     if system == "Windows":
         font_dir = os.path.join(os.environ.get("WINDIR", "C:\\Windows"), "Fonts")
@@ -38,8 +43,8 @@ def get_font():
             if f.lower().endswith(".ttf"):
                 return os.path.join(root, f)
 
-    # 4. Give up, let FFmpeg use its default
     return None
+
 
 def add_text_to_video(input_video, texts, times):
     import os
@@ -198,7 +203,7 @@ def add_text_to_video(input_video, texts, times):
 
 #example
 '''add_text_to_video(
-    "combined_temp.mp4",
+    "temp.mp4",
     ["First Text","Second Text","Third Text","Fourth Text","Fifth Text"],
-    [0, 8, 32, 46, 62, 69]
+    [0, 3, 5, 7, 8, 9]
 )'''
