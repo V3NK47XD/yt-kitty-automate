@@ -31,6 +31,9 @@ async def start_bot(signal_queue):
         if message.author.bot:
             return
 
+        if message.channel.id != int(os.getenv("CHANNEL_ID")):
+            return
+
         match = INSTAGRAM_PATTERN.search(message.content)
 
         if match:
@@ -55,8 +58,8 @@ async def send_message(channel_id, text):
     if channel:
         await channel.send(text)
 
-def send_message_sync(channel_id, text):
+def send_message_sync(text):
+
     asyncio.run_coroutine_threadsafe(
-        send_message(channel_id, text),
-        bot_instance.loop
+        send_message(int(os.getenv("CHANNEL_ID")), text),bot_instance.loop
     )

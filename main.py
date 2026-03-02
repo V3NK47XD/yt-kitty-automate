@@ -3,24 +3,25 @@ from combine import combine_buffer
 from add_text import add_text_to_video
 from get_folders import get_folders_with_5_videos
 from discord_bot import send_message_sync, start_bot
-import requests
-from dotenv import load_dotenv
 import os
 from upload import upload_to_filebin
+from caption_generator import generate_caption
 
 def process(folders):
     for folder in folders:
         names, timestamps, output_file = combine_buffer(folder)
 
+        captions = generate_caption()
+
         output_video = add_text_to_video(
             output_file,
-            ["First Text","Second Text","Third Text","Fourth Text","Fifth Text"],
+            #["First Text","Second Text","Third Text","Fourth Text","Fifth Text"],
+            captions,
             timestamps
         )
         url = upload_to_filebin(output_video)
 
         send_message_sync(
-    int(os.getenv("CHANNEL_ID")),
     f"✅ Processing complete. File at {url}"
 )
     

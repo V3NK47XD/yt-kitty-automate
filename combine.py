@@ -1,7 +1,6 @@
 def combine_buffer(folder):
     import os
     import ffmpeg
-    from dotenv import load_dotenv
 
     BUFFER_FOLDER = os.path.join("buffer", folder)
     OUTPUT_FILE = f"combined_{folder}.mp4"

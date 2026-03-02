@@ -45,7 +45,6 @@ def add_text_to_video(input_video, texts, times):
     import os
     import ffmpeg
     from datetime import datetime
-    from dotenv import load_dotenv
 
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_video = f"output_{now}.mp4"
