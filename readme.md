@@ -24,7 +24,7 @@ FILEBIN_KEY="smalltext"
 CHANNEL_ID=1234567890
 
 # Font path (optional, for add_text.py)
-FONT_PATH = "path/to/your/font.ttf"
+FONT_PATH = "fonts/OpenSansExtraBold.ttf"
 
 # NVIDIA GPU usage (optional, for combine.py)
 NVIDIA_GPU = False
