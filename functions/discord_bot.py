@@ -2,7 +2,7 @@ import re
 import discord
 import asyncio
 from discord.ext import commands
-from reel_download import download_instagram_reel
+from functions.reel_download import download_instagram_reel
 import os
 from dotenv import load_dotenv
 

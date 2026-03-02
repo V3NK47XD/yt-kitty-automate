@@ -1,11 +1,11 @@
 import asyncio
-from combine import combine_buffer
-from add_text import add_text_to_video
-from get_folders import get_folders_with_5_videos
-from discord_bot import send_message_sync, start_bot
+from functions.combine import combine_buffer
+from functions.add_text import add_text_to_video
+from functions.get_folders import get_folders_with_5_videos
+from functions.discord_bot import send_message_sync, start_bot
 import os
-from upload import upload_to_filebin
-from caption_generator import generate_caption
+from functions.upload import upload_to_filebin
+from functions.caption_generator import generate_caption
 
 def process(folders):
     for folder in folders:

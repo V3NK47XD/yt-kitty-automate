@@ -1,7 +1,7 @@
 def move_to_folder(destination="buffer", source="reels_downloads"):
     import shutil
     import os
-    from get_folders import get_folders_with_5_videos
+    from functions.get_folders import get_folders_with_5_videos
 
     folders = get_folders_with_5_videos()
     folders.sort()
