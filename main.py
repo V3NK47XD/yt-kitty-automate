@@ -11,7 +11,10 @@ def process(folders):
     for folder in folders:
         names, timestamps, output_file = combine_buffer(folder)
 
-        captions = generate_caption()
+        captions = [
+    " ".join(item.replace(".mp4", "").replace("_", " ").strip().split()[:3])
+    for item in names
+]
 
         output_video = add_text_to_video(
             output_file,

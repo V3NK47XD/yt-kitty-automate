@@ -10,7 +10,7 @@ load_dotenv()
 bot_instance = None
 TOKEN = os.getenv("DISCORD_TOKEN")
 INSTAGRAM_PATTERN = re.compile(
-    r"https?://(www\.)?instagram\.com/(reel|p)/[A-Za-z0-9_-]+/?"
+    r"https?://(www\.)?instagram\.com/(reels|reel|p)/[A-Za-z0-9_-]+/?"
 )
 
 async def start_bot(signal_queue):
@@ -37,13 +37,30 @@ async def start_bot(signal_queue):
         match = INSTAGRAM_PATTERN.search(message.content)
 
         if match:
+            reel_link = match.group()
+
             await message.channel.send("📥 Downloading reel...")
+            await message.channel.send("✏️ Please enter video name:")
+
+            def check(m):
+                return (
+                    m.author == message.author and
+                    m.channel == message.channel
+                )
 
             try:
-                await asyncio.to_thread(download_instagram_reel, match.group())
+                name_msg = await bot.wait_for("message", check=check, timeout=60)
+                video_name = name_msg.content.strip()
+
+                await message.channel.send("⏳ Processing...")
+
+                await asyncio.to_thread(download_instagram_reel, reel_link, video_name)
+
                 await message.channel.send("✅ Downloaded!")
                 await signal_queue.put("PROCESS")
 
+            except asyncio.TimeoutError:
+                await message.channel.send("⌛ Timeout. Please send the reel again.")
             except Exception as e:
                 await message.channel.send(f"❌ Error: {e}")
 

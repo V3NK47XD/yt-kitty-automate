@@ -18,9 +18,9 @@ def move_to_folder(destination="buffer", source="reels_downloads"):
             shutil.move(os.path.join(source, filename), os.path.join(destination, filename))
             print(f"Moved {filename} to {destination}")
 
-def download_instagram_reel(url):
+def download_instagram_reel(url,name):
     import instaloader
-
+    name = name.strip().replace(" ", "_")
     # Create instance
     L = instaloader.Instaloader(
     download_pictures=False,
@@ -30,7 +30,8 @@ def download_instagram_reel(url):
     download_comments=False,
     save_metadata=False,
     compress_json=False,
-    post_metadata_txt_pattern="" 
+    post_metadata_txt_pattern="" ,
+    filename_pattern=name  # 🔥 this sets filename
 )
 
     # Optional: Login (needed for private accounts)
@@ -51,4 +52,4 @@ def download_instagram_reel(url):
         print("Reel downloaded successfully!")
     except Exception as e:
         print(f"Error downloading reel: {e}")
-#download_instagram_reel("https://www.instagram.com/p/DU-mfZooJE8/")
+#download_instagram_reel("https://www.instagram.com/p/DS8_KjZiPJ7/","maja va")
