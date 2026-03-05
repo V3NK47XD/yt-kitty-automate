@@ -1,5 +1,5 @@
 requests
 discord.py
-instaloader
+yt-dlp
 ffmpeg-python
 python-dotenv

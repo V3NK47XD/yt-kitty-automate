@@ -1,57 +1,60 @@
-def move_to_folder(destination="buffer", source="reels_downloads"):
-    import shutil
-    import os
-    from functions.get_folders import get_folders_with_5_videos
+import os
+import shutil
+import subprocess
 
-    folders = get_folders_with_5_videos()
-    folders.sort()
-    if folders:
-        destination = os.path.join(destination, str(int(folders[-1])+1))
-    else:
-        destination = os.path.join(destination, "1") 
 
+def get_next_buffer_folder(base="buffer"):
+    """Determine the next available buffer folder number."""
+    if not os.path.exists(base):
+        os.makedirs(base)
+
+    existing = [
+        int(d) for d in os.listdir(base)
+        if os.path.isdir(os.path.join(base, d)) and d.isdigit()
+    ]
+    return os.path.join(base, str(max(existing, default=0) + 1))
+
+
+def move_to_folder(destination, source="reels_downloads"):
+    """Move downloaded .mp4 files from source into the given destination folder."""
     if not os.path.exists(destination):
         os.makedirs(destination)
 
     for filename in os.listdir(source):
         if filename.endswith(".mp4"):
-            # Count existing clips to determine insertion order
             existing = [f for f in os.listdir(destination) if f.endswith(".mp4")]
             new_name = f"clip_{len(existing) + 1:03d}.mp4"
-            shutil.move(os.path.join(source, filename), os.path.join(destination, new_name))
+            shutil.move(
+                os.path.join(source, filename),
+                os.path.join(destination, new_name),
+            )
             print(f"Moved {filename} → {new_name} in {destination}")
 
-def download_instagram_reel(url):
-    import instaloader
 
-    # Create instance
-    L = instaloader.Instaloader(
-    download_pictures=False,
-    download_videos=True,
-    download_video_thumbnails=False,
-    download_geotags=False,
-    download_comments=False,
-    save_metadata=False,
-    compress_json=False,
-    post_metadata_txt_pattern="" 
-)
+def download_instagram_reel(url, buffer_folder):
+    """Download an Instagram reel using yt-dlp and move it to buffer_folder."""
+    reel_url = url.strip()
+    download_dir = "reels_downloads"
 
-    # Optional: Login (needed for private accounts)
-    #L.login("your_username", "your_password")  # Replace with your credentials
-    reel_url = url.strip()  # Remove any leading/trailing whitespace
+    os.makedirs(download_dir, exist_ok=True)
 
-    if reel_url[-1] != "/":
-        reel_url = reel_url+"/" 
-    # Extract shortcode
-    shortcode = reel_url.split("/")[-2]
+    # Use yt-dlp to download the reel
+    cmd = [
+        "yt-dlp",
+        "--no-warnings",
+        "--no-playlist",
+        "-f", "mp4/best",
+        "--merge-output-format", "mp4",
+        "-o", os.path.join(download_dir, "%(id)s.%(ext)s"),
+        reel_url,
+    ]
 
-    # Download reel
-    try:
-        post = instaloader.Post.from_shortcode(L.context, shortcode)
-        L.download_post(post, target="reels_downloads")
+    result = subprocess.run(cmd, capture_output=True, text=True)
 
-        move_to_folder()  # Move downloaded reels to buffer folder
-        print("Reel downloaded successfully!")
-    except Exception as e:
-        print(f"Error downloading reel: {e}")
-#download_instagram_reel("https://www.instagram.com/p/DU-mfZooJE8/")
+    if result.returncode != 0:
+        error_msg = result.stderr.strip() or result.stdout.strip()
+        raise RuntimeError(f"yt-dlp failed: {error_msg}")
+
+    # Move downloaded file into the buffer folder
+    move_to_folder(buffer_folder, source=download_dir)
+    print("Reel downloaded successfully!")

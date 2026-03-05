@@ -174,7 +174,7 @@ def add_text_to_video(input_video, texts, times):
             fontcolor="white"
         )
     )
-    if os.getenv("NVIDIA_GPU", "False").lower() == "true":
+    if os.getenv("NVIDIA_GPU", "False").strip().lower() == "true":
         gpu_codec = "h264_nvenc"
     else:
         gpu_codec = "libx264"

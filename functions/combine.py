@@ -60,7 +60,7 @@ def combine_buffer(folder):
         streams.extend([v, a])
 
     # CONCAT (now ALWAYS safe)
-    if os.getenv("NVIDIA_GPU", "False").lower() == "true":
+    if os.getenv("NVIDIA_GPU", "False").strip().lower() == "true":
         gpu_codec = "h264_nvenc"
     else:
         gpu_codec = "libx264"

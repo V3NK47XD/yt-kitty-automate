@@ -3,7 +3,7 @@ import asyncio
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
-from functions.reel_download import download_instagram_reel
+from functions.reel_download import download_instagram_reel, get_next_buffer_folder
 
 load_dotenv()
 
@@ -14,14 +14,17 @@ bot_instance = None
 
 # ─── Per-channel conversation state ───────────────────────────────────────────
 # State keys:
-#   step   : int  → current clip number (1–5)
-#   phase  : str  → "link" | "caption"
-#   captions: list → collected caption strings
+#   step         : int  → current clip number (1–5)
+#   phase        : str  → "link" | "caption"
+#   captions     : list → collected caption strings
+#   buffer_folder: str  → path to the single buffer folder for this session
 
 conversation_state = {}
 
+
 def _initial_state():
-    return {"step": 1, "phase": "link", "captions": []}
+    folder = get_next_buffer_folder()
+    return {"step": 1, "phase": "link", "captions": [], "buffer_folder": folder}
 
 
 # ─── Bot setup ────────────────────────────────────────────────────────────────
@@ -58,7 +61,6 @@ async def start_bot(signal_queue):
 
         state = conversation_state.get(CHANNEL_ID)
         if state is None:
-            # Shouldn't happen, but guard anyway
             conversation_state[CHANNEL_ID] = _initial_state()
             state = conversation_state[CHANNEL_ID]
 
@@ -78,7 +80,9 @@ async def start_bot(signal_queue):
             await message.channel.send(f"📥 Downloading Clip {step}...")
 
             try:
-                await asyncio.to_thread(download_instagram_reel, content)
+                await asyncio.to_thread(
+                    download_instagram_reel, content, state["buffer_folder"]
+                )
                 await message.channel.send(
                     f"✅ Clip {step} downloaded!\n\n"
                     f"✏️ Now enter the **caption for Clip {step}:**"

@@ -9,18 +9,24 @@ from functions.upload import upload_to_filebin
 
 def process(folders, captions):
     for folder in folders:
-        names, timestamps, output_file = combine_buffer(folder)
+        try:
+            names, timestamps, output_file = combine_buffer(folder)
 
-        output_video = add_text_to_video(
-            output_file,
-            captions,
-            timestamps
-        )
-        url = upload_to_filebin(output_video)
+            output_video = add_text_to_video(
+                output_file,
+                captions,
+                timestamps
+            )
+            url = upload_to_filebin(output_video)
 
-        send_message_sync(
-            f"✅ Processing complete!\n📎 Download your video here: {url}"
-        )
+            send_message_sync(
+                f"✅ Processing complete!\n📎 Download your video here: {url}"
+            )
+        except Exception as e:
+            send_message_sync(
+                f"❌ Error during video processing: {e}"
+            )
+            print(f"Error in process: {e}")
 
 
 def check(captions):
