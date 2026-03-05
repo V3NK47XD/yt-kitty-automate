@@ -20,6 +20,13 @@ def move_to_folder(destination="buffer", source="reels_downloads"):
 
 def download_instagram_reel(url,name):
     import instaloader
+    import os
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
+    USERNAME = os.getenv("IG_USERNAME")
+    PASSWORD = os.getenv("IG_PASSWORD")
     name = name.strip().replace(" ", "_")
     # Create instance
     L = instaloader.Instaloader(
@@ -33,7 +40,8 @@ def download_instagram_reel(url,name):
     post_metadata_txt_pattern="" ,
     filename_pattern=name  # 🔥 this sets filename
 )
-
+    if USERNAME!="NULL" and PASSWORD!="NULL":
+        L.login(USERNAME, PASSWORD)
     # Optional: Login (needed for private accounts)
     #L.login("your_username", "your_password")  # Replace with your credentials
     reel_url = url.strip()  # Remove any leading/trailing whitespace

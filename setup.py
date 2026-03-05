@@ -120,6 +120,9 @@ CHANNEL_ID=1234567890
 FONT_PATH = "fonts/OpenSansExtraBold.ttf"
 # NVIDIA GPU usage (use if you have nvidia gpu, for combine.py)
 NVIDIA_GPU = False
+IG_USERNAME = "NULL"
+
+IG_PASSWORD = "NULL"
 """
 
     with open(env_path, "w") as f:
