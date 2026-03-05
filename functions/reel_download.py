@@ -40,12 +40,14 @@ def download_instagram_reel(url,name):
     post_metadata_txt_pattern="" ,
     filename_pattern=name  # 🔥 this sets filename
 )
+    print("gonna login")
     if USERNAME!="NULL" and PASSWORD!="NULL":
         L.login(USERNAME, PASSWORD)
+        print("logged in")
     # Optional: Login (needed for private accounts)
     #L.login("your_username", "your_password")  # Replace with your credentials
     reel_url = url.strip()  # Remove any leading/trailing whitespace
-
+    
     if reel_url[-1] != "/":
         reel_url = reel_url+"/" 
     # Extract shortcode
