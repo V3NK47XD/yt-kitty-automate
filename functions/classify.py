@@ -84,6 +84,3 @@ Return ONLY strict JSON in this format:
     caption = result["caption"]
 
     return category, caption
-
-
-print(classify("video.mp4"))
