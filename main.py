@@ -11,9 +11,12 @@ def process(folders):
     for folder in folders:
         names, timestamps, output_file = combine_buffer(folder)
 
-        captions = generate_caption()
+        
+        #captions = generate_caption()
+        captions = names
 
         output_video = add_text_to_video(
+            folder,
             output_file,
             #["First Text","Second Text","Third Text","Fourth Text","Fifth Text"],
             captions,

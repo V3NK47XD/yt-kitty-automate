@@ -10,7 +10,7 @@ load_dotenv()
 bot_instance = None
 TOKEN = os.getenv("DISCORD_TOKEN")
 INSTAGRAM_PATTERN = re.compile(
-    r"https?://(www\.)?instagram\.com/(reel|p)/[A-Za-z0-9_-]+/?"
+     r"https?://(www\.)?instagram\.com/(reel|reels|p)/[A-Za-z0-9_-]+/?"
 )
 
 async def start_bot(signal_queue):

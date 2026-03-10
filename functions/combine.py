@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+
+load_dotenv() 
 def combine_buffer(folder):
     import os
     import ffmpeg

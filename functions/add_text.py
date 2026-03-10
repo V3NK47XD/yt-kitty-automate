@@ -1,4 +1,7 @@
 
+from dotenv import load_dotenv
+
+load_dotenv() 
 def get_font():
     import os
     import platform
@@ -46,7 +49,7 @@ def get_font():
     return None
 
 
-def add_text_to_video(input_video, texts, times):
+def add_text_to_video(title,input_video, texts, times):
     import os
     import ffmpeg
     from datetime import datetime
@@ -81,7 +84,7 @@ def add_text_to_video(input_video, texts, times):
         )
         .drawtext(
             fontfile=font,
-            text="KITTY MOMENTS ",
+            text=title,
             enable=f"between(t,{times[0]},{times[-1]})",
             x=130, y=220,
             fontsize=100,

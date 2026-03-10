@@ -1,0 +1,89 @@
+import os
+import base64
+import cv2
+import requests
+from dotenv import load_dotenv
+import ffmpeg
+
+import json
+
+load_dotenv()
+
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+
+def getimage(video):
+
+    frame_number = 60
+
+    out, _ = (
+        ffmpeg
+        .input(video)
+        .filter('select', f'eq(n,{frame_number})')
+        .output('pipe:', vframes=1, format='image2', vcodec='mjpeg')
+        .run(capture_stdout=True, capture_stderr=True)
+    )
+
+    if not out:
+        raise Exception("Failed to extract frame")
+
+    return out
+
+
+def classify(video):
+
+    categories = os.getenv("CATEGORIES").split(",")
+    categories = [c.strip() for c in categories]
+
+    print("Available categories:", categories)
+
+    img = getimage(video)
+    img_b64 = base64.b64encode(img).decode()
+
+    prompt = f"""
+You are a classifier.
+
+Choose ONE category from this list:
+{categories}
+
+Return ONLY strict JSON in this format:
+{{
+"category":"chosen category",
+"caption":"short 2 word caption for video"
+}}
+"""
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key={API_KEY}"
+
+    payload = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": prompt},
+                    {
+                        "inline_data": {
+                            "mime_type": "image/jpeg",
+                            "data": img_b64
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+
+    r = requests.post(url, json=payload)
+    data = r.json()
+
+    text = data["candidates"][0]["content"]["parts"][0]["text"]
+
+    print(type(text))   # usually str
+
+    result = json.loads(text)
+
+    category = result["category"]
+    caption = result["caption"]
+
+    return category, caption
+
+
+print(classify("video.mp4"))

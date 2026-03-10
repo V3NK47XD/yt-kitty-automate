@@ -2,6 +2,9 @@ import requests
 import os
 import secrets
 import string
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 def upload_to_filebin(file_path):
     # generate random 10-char string
