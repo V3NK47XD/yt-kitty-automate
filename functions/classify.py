@@ -14,7 +14,7 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 
 def getimage(video):
 
-    frame_number = 60
+    frame_number = 30
 
     out, _ = (
         ffmpeg
