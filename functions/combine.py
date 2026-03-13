@@ -84,6 +84,6 @@ def combine_buffer(folder):
     # Delete processed videos
     for video in names_array:
         os.remove(os.path.join(BUFFER_FOLDER, video))
-    os.rmdir(BUFFER_FOLDER)
+    #os.rmdir(BUFFER_FOLDER)
 
     return names_array, timestamps ,OUTPUT_FILE
