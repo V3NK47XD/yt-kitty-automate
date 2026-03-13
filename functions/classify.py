@@ -1,6 +1,5 @@
 import os
 import base64
-import cv2
 import requests
 from dotenv import load_dotenv
 import ffmpeg
