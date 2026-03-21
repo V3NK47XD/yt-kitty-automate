@@ -9,14 +9,14 @@ def get_duration(file):
 def trim_inplace(file):
     duration = get_duration(file)
 
-    if duration <= 60:
+    if duration <= 56:
         return  # nothing to do
 
     temp_file = file + ".tmp.mp4"
 
     (
         ffmpeg
-        .input(file, t=60)
+        .input(file, t=56)
         .output(temp_file, c='copy')
         .overwrite_output()
         .run()
