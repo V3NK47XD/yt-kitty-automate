@@ -1,3 +1,30 @@
+
+# ⚙️ What it does
+
+### Once the bot runs:
+
+1. 🔍 Scans a Discord channel for recent reel/video links
+2. ⬇️ Downloads all detected videos
+3. 🎞️ Merges them into a single compiled video
+4. 🤖 Uses Gemini API to generate:
+    -Caption ✍️
+    -Category 🏷️
+5. ☁️ Uploads the final video to Filebin
+6. 🔗 Sends the downloadable link back to Discord
+
+### 🔧 Configuration
+
+# All settings are easily configurable via a .env file:
+
+- Discord bot token 🔑
+- Channel ID 📡
+- Gemini API key 🤖
+- File handling settings ⚙️
+- Categories / titles mapping 🏷️
+- NVIDIA GPU usage for video processing (optional) 🚀
+- Font path for text overlay (optional) 🎨
+
+
 ## Setup the project with 
 ```bash
 python setup.py
