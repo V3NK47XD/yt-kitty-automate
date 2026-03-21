@@ -12,9 +12,9 @@
 5. ☁️ Uploads the final video to Filebin
 6. 🔗 Sends the downloadable link back to Discord
 
-### 🔧 Configuration
+# 🔧 Configuration
 
-# All settings are easily configurable via a .env file:
+### All settings are easily configurable via a .env file:
 
 - Discord bot token 🔑
 - Channel ID 📡
@@ -25,7 +25,7 @@
 - Font path for text overlay (optional) 🎨
 
 
-## Setup the project with 
+# Setup the project with 
 ```bash
 python setup.py
 ```
