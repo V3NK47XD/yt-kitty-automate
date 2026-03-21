@@ -6,6 +6,7 @@ from functions.discord_bot import send_message_sync, start_bot
 import os
 from functions.upload import upload_to_filebin
 from functions.caption_generator import generate_caption
+from functions.too_big import trim_inplace
 
 def process(folders):
     for folder in folders:
@@ -22,6 +23,9 @@ def process(folders):
             captions,
             timestamps
         )
+
+        trim_inplace(output_video)
+
         url = upload_to_filebin(output_video)
 
         send_message_sync(
