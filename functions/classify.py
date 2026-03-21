@@ -28,6 +28,25 @@ def getimage(video):
 
     return out
 
+def get_all_videos(base_folder="buffer"):
+    if not os.path.exists(base_folder):
+        os.makedirs(base_folder)
+        print(f"📁 Created base folder: {base_folder}")
+
+    all_videos = []
+
+    for folder in os.listdir(base_folder):
+        full_path = os.path.join(base_folder, folder)
+
+        if os.path.isdir(full_path):
+            video_files = [
+                f for f in os.listdir(full_path)
+                if f.endswith((".mp4", ".mov", ".mkv"))
+            ]
+
+            all_videos.extend(video_files)  # collect all videos
+
+    return all_videos
 
 def classify(video):
 
@@ -44,6 +63,8 @@ You are a classifier.
 
 Choose ONE category from this list:
 {categories}
+And don't use the below for caption:
+{get_all_videos()}
 
 Return ONLY strict JSON in this format:
 {{
