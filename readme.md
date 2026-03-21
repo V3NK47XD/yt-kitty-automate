@@ -29,7 +29,7 @@
 ```bash
 python setup.py
 ```
-### Reopen New Terminal to make it work good.
+### ⚠️ Reopen New Terminal to make it work good. ⚠️
 
 ## Install dependencies with 
 ```bash
