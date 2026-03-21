@@ -49,7 +49,7 @@ async def main():
 
     while True:
         signal = await signal_queue.get()
-
+        
         if signal == "PROCESS":
             print("🚀 Signal received from bot. Processing...")
             await asyncio.to_thread(check)

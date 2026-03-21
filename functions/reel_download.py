@@ -15,6 +15,7 @@ def move_to_folder(destination="buffer", source="reels_downloads"):
 
     video = get_video_from_folder(source)  # Check if video exists, will raise exception if not
     category, caption = classify(video)
+    print(category, caption)
     folders = get_folders_with_5_videos()
     folders.sort()
     
@@ -61,4 +62,6 @@ def download_instagram_reel(url):
         print("Reel downloaded successfully!")
     except Exception as e:
         print(f"Error downloading reel: {e}")
+
+    print(" . ")
 #download_instagram_reel("https://www.instagram.com/p/DU-mfZooJE8/")

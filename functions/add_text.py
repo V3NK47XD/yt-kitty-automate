@@ -57,9 +57,12 @@ def add_text_to_video(title,input_video, texts, times):
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_video = f"output_{now}.mp4"
     font = get_font()
+    d={"cats":"Kitty Moments","dogs":"Puppy Moments","nature":"Nature Moments" }
+    title = d.get(title, title)
     size = 60
     border = 4
-
+    title_size = 1260 / len(title)
+    print(title_size)
     inp = ffmpeg.input(input_video)
 
     video = (
@@ -86,8 +89,8 @@ def add_text_to_video(title,input_video, texts, times):
             fontfile=font,
             text=title,
             enable=f"between(t,{times[0]},{times[-1]})",
-            x=130, y=220,
-            fontsize=100,
+            x="(w-text_w)/2", y=220,
+            fontsize=title_size,
             borderw=border,
             fontcolor="#C11C84"
         )

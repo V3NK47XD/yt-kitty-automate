@@ -17,7 +17,7 @@ POLL_INTERVAL = 10  # seconds between each history check
 
 
 async def start_bot(signal_queue):
-
+    await signal_queue.put("PROCESS")
     intents = discord.Intents.default()
     intents.message_content = True
 
@@ -73,17 +73,15 @@ async def poll_history(bot, signal_queue):
             await channel.send(f"📥 Downloading reel: **{video_name}**...")
 
             try:
-                await asyncio.to_thread(download_instagram_reel, reel_link, video_name)
-                await channel.send(f"✅ Downloaded: **{video_name}**")
-                processed_any = True
+                await asyncio.to_thread(download_instagram_reel, reel_link)
+                await channel.send(f"✅ Downloaded")
+                await signal_queue.put("PROCESS")
             except Exception as e:
                 await channel.send(f"❌ Error downloading {reel_link}: {e}")
 
     # Mark everything as processed
     await channel.send("Flagged")
-
-    if processed_any:
-        await signal_queue.put("PROCESS")
+        
 
 
 async def send_message(channel_id, text):
