@@ -28,6 +28,12 @@ FONT_PATH = "fonts/OpenSansExtraBold.ttf"
 
 # NVIDIA GPU usage (optional, for combine.py)
 NVIDIA_GPU = False
+
+CATEGORIES = "cats, dogs , other"
+
+TITLE = '{"cats":"KITTY MOMENTS","dogs":"PUPPY MOMENTS","other":"WORTHY MOMENTS" }'
+
+GEMINI_API_KEY = "API-KEY-HERE"
 ```
 
 

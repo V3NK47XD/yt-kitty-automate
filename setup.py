@@ -120,6 +120,13 @@ CHANNEL_ID=1234567890
 FONT_PATH = "fonts/OpenSansExtraBold.ttf"
 # NVIDIA GPU usage (use if you have nvidia gpu, for combine.py)
 NVIDIA_GPU = False
+
+
+CATEGORIES = "cats, dogs , other"
+
+TITLE = '{"cats":"KITTY MOMENTS","dogs":"PUPPY MOMENTS","other":"WORTHY MOMENTS" }'
+
+GEMINI_API_KEY = "API-KEY-HERE"
 """
 
     with open(env_path, "w") as f:

@@ -1,4 +1,6 @@
 
+import json
+
 from dotenv import load_dotenv
 
 load_dotenv() 
@@ -53,11 +55,12 @@ def add_text_to_video(title,input_video, texts, times):
     import os
     import ffmpeg
     from datetime import datetime
+    import json
 
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_video = f"output_{now}.mp4"
     font = get_font()
-    d={"cats":"KITTY MOMENTS","dogs":"PUPPY MOMENTS","nature":"NATURE MOMENTS" }
+    d = json.loads(os.getenv("TITLE", "{}"))
 
     texts = [s.removesuffix(".mp4") for s in texts]
 
