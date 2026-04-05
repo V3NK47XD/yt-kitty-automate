@@ -14,6 +14,15 @@ def combine_buffer(folder):
     videos = sorted(os.listdir(BUFFER_FOLDER))
     videos = [v for v in videos if v.endswith((".mp4", ".mov", ".mkv"))][:5]
 
+    def sort_with_length(video_list):
+        def get_duration(video):
+            path = os.path.join(BUFFER_FOLDER, video)
+            probe = ffmpeg.probe(path)
+            return float(probe["format"]["duration"])
+        return sorted(video_list, key=get_duration)
+
+    videos = sort_with_length(videos)
+
     if len(videos) < 5:
         raise Exception("Less than 5 videos found.")
 
