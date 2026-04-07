@@ -59,27 +59,28 @@ def classify(video):
     img_b64 = base64.b64encode(img).decode()
 
     prompt = f"""
-You are a classifier.
+You are a classifier. AND FOLLOW STRICT INSTUCTION. OUPUT ONLY JSON AND NOTHING ELSE.
 
 Choose ONE category from this list:
 {categories}
 And don't use the below for caption:
 {get_all_videos()}
-
+Litteraly dont even include the thing process or anything.
+ONLY OUTPUT THE JSON, NOT ANYTHING ELSE. JUST THE JSON FORMAT SPECIFIED BELOW.
 Return ONLY strict JSON in this format:
 {{
 "category":"chosen category",
-"caption":"short 2 word caption for video"
+"caption":"short 2 word caption for video, for youtube shorts"
 }}
 """
-
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key={API_KEY}"
+    print("sending to gemma")
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemma-4-31b-it:generateContent?key={API_KEY}"
 
     payload = {
         "contents": [
             {
                 "parts": [
-                    {"text": prompt},
+                    {"text": prompt,"thought":"false"},
                     {
                         "inline_data": {
                             "mime_type": "image/jpeg",
@@ -88,15 +89,28 @@ Return ONLY strict JSON in this format:
                     }
                 ]
             }
-        ]
+        ],
+        "generationConfig": {
+            "thinkingConfig": {
+                "thinkingLevel": "MINIMAL"
+      }
     }
-
+    }
+    print(payload)
     r = requests.post(url, json=payload)
     data = r.json()
+    print(data)
+    parts = data["candidates"][0]["content"]["parts"]
 
-    text = data["candidates"][0]["content"]["parts"][0]["text"]
+    # find the part that actually has text
+    text = None
+    for p in parts:
+        if "text" in p and p["text"].strip():
+            text = p["text"]
+            break
 
-    print(type(text))   # usually str
+    # clean markdown ```json ```
+    text = text.strip().replace("```json", "").replace("```", "").strip()
 
     result = json.loads(text)
 
