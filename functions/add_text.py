@@ -112,30 +112,12 @@ def add_text_to_video(title,input_video, texts, times):
         )
         .drawtext(
             fontfile=font,
-            text=texts[0],
-            enable=f"between(t,{times[0]},{times[-1]})",
-            x=130, y=535,
-            fontsize=size,
-            borderw=border,
-            fontcolor="white"
-        )
-        .drawtext(
-            fontfile=font,
             text="2.",
             enable=f"between(t,{times[0]},{times[-1]})",
             x=55, y=790,
             fontsize=size,
             borderw=border,
             fontcolor="cyan"
-        )
-        .drawtext(
-            fontfile=font,
-            text=texts[1],
-            enable=f"between(t,{times[1]},{times[-1]})",
-            x=130, y=790,
-            fontsize=size,
-            borderw=border,
-            fontcolor="white"
         )
         .drawtext(
             fontfile=font,
@@ -148,30 +130,12 @@ def add_text_to_video(title,input_video, texts, times):
         )
         .drawtext(
             fontfile=font,
-            text=texts[2],
-            enable=f"between(t,{times[2]},{times[-1]})",
-            x=130, y=1030,
-            fontsize=size,
-            borderw=border,
-            fontcolor="white"
-        )
-        .drawtext(
-            fontfile=font,
             text="4.",
             enable=f"between(t,{times[0]},{times[-1]})",
             x=55, y=1280,
             fontsize=size,
             borderw=border,
             fontcolor="green"
-        )
-        .drawtext(
-            fontfile=font,
-            text=texts[3],
-            enable=f"between(t,{times[3]},{times[-1]})",
-            x=130, y=1280,
-            fontsize=size,
-            borderw=border,
-            fontcolor="white"
         )
         .drawtext(
             fontfile=font,
@@ -184,9 +148,45 @@ def add_text_to_video(title,input_video, texts, times):
         )
         .drawtext(
             fontfile=font,
+            text=texts[0],
+            enable=f"between(t,{times[0]},{times[-1]})",
+            x=130, y=1550,
+            fontsize=size,
+            borderw=border,
+            fontcolor="white"
+        )
+        .drawtext(
+            fontfile=font,
+            text=texts[1],
+            enable=f"between(t,{times[1]},{times[-1]})",
+            x=130, y=1280,
+            fontsize=size,
+            borderw=border,
+            fontcolor="white"
+        )
+        .drawtext(
+            fontfile=font,
+            text=texts[2],
+            enable=f"between(t,{times[2]},{times[-1]})",
+            x=130, y=1030,
+            fontsize=size,
+            borderw=border,
+            fontcolor="white"
+        )
+        .drawtext(
+            fontfile=font,
+            text=texts[3],
+            enable=f"between(t,{times[3]},{times[-1]})",
+            x=130, y=790,
+            fontsize=size,
+            borderw=border,
+            fontcolor="white"
+        )
+        .drawtext(
+            fontfile=font,
             text=texts[4],
             enable=f"between(t,{times[4]},{times[-1]})",
-            x=130, y=1550,
+            x=130, y=535,
             fontsize=size,
             borderw=border,
             fontcolor="white"
