@@ -3,6 +3,7 @@ import discord
 import asyncio
 from discord.ext import commands, tasks
 from functions.reel_download import download_instagram_reel
+from functions.yt_download import download_youtube_video
 import os
 from dotenv import load_dotenv
 
@@ -11,6 +12,9 @@ bot_instance = None
 TOKEN = os.getenv("DISCORD_TOKEN")
 INSTAGRAM_PATTERN = re.compile(
     r"https?://(www\.)?instagram\.com/(reels|reel|p)/[A-Za-z0-9_-]+/?"
+)
+YOUTUBE_PATTERN = re.compile(
+    r"https?://(www\.)?youtube\.com/shorts/[A-Za-z0-9_-]+/?|https?://youtu\.be/[A-Za-z0-9_-]+/"
 )
 
 POLL_INTERVAL = 10  # seconds between each history check
@@ -78,6 +82,19 @@ async def poll_history(bot, signal_queue):
                 await signal_queue.put("PROCESS")
             except Exception as e:
                 await channel.send(f"❌ Error downloading {reel_link}: {e}")
+
+        yt_match = YOUTUBE_PATTERN.search(msg.content)
+        if yt_match:
+            yt_link = yt_match.group()
+            video_id = yt_link.rstrip("/").split("/")[-1]
+            await channel.send(f"📥 Downloading YouTube video: **{video_id}**...")
+
+            try:
+                await asyncio.to_thread(download_youtube_video, yt_link)
+                await channel.send(f"✅ Downloaded")
+                await signal_queue.put("PROCESS")
+            except Exception as e:
+                await channel.send(f"❌ Error downloading {yt_link}: {e}")
 
     # Mark everything as processed
     await channel.send("Flagged")
