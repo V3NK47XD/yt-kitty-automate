@@ -66,5 +66,10 @@ GEMINI_API_KEY = "API-KEY-HERE"
 
 ## Run the bot with 
 ```bash
-python main.py
+python launcher.py
 ```
+
+### 🌐 Configuration Manager
+The project now includes a web-based configuration manager. Once you run `launcher.py`, you can visit:
+**`http://127.0.0.1:5000`**
+to edit your `.env` file and restart the bot instantly without manually restarting the script.
