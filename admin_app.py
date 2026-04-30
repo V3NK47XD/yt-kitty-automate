@@ -1,4 +1,5 @@
 import os
+import shutil
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -145,6 +146,12 @@ def index():
 @app.route('/get-env')
 def get_env():
     try:
+        if not os.path.exists(ENV_FILE):
+            if os.path.exists(".env.example"):
+                shutil.copy(".env.example", ENV_FILE)
+            else:
+                return "Error: .env not found and .env.example is missing.", 500
+        
         with open(ENV_FILE, 'r') as f:
             return f.read()
     except Exception as e:
