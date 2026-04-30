@@ -15,20 +15,17 @@ def move_to_folder(destination="buffer", source="yt_downloads"):
     from functions.get_folders import get_folders_with_5_videos
     from functions.classify import classify
 
-    video = get_video_from_folder(source)  # Check if video exists, will raise exception if not
-    category, caption = classify(video)
-    print(category, caption)
-    folders = get_folders_with_5_videos()
-    folders.sort()
-    
-    destination_path = os.path.join(destination, category) 
-
-    if not os.path.exists(destination_path):
-        os.makedirs(destination_path)
-
     for filename in os.listdir(source):
         if filename.endswith(".mp4"):
-            shutil.move(os.path.join(source, filename), os.path.join(destination_path, caption + ".mp4"))
+            video_path = os.path.join(source, filename)
+            category, caption = classify(video_path)
+            print(f"Category: {category}, Caption: {caption}")
+
+            destination_path = os.path.join(destination, category)
+            if not os.path.exists(destination_path):
+                os.makedirs(destination_path)
+
+            shutil.move(video_path, os.path.join(destination_path, caption + ".mp4"))
             print(f"Moved {filename} to {destination_path}")
 
 def download_youtube_video(url):

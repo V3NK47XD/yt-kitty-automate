@@ -13,21 +13,18 @@ def move_to_folder(destination="buffer", source="reels_downloads"):
     from functions.get_folders import get_folders_with_5_videos
     from functions.classify import classify
 
-    video = get_video_from_folder(source)  # Check if video exists, will raise exception if not
-    category, caption = classify(video)
-    print(category, caption)
-    folders = get_folders_with_5_videos()
-    folders.sort()
-    
-    destination = os.path.join(destination, category) 
-
-    if not os.path.exists(destination):
-        os.makedirs(destination)
-
     for filename in os.listdir(source):
         if filename.endswith(".mp4"):
-            shutil.move(os.path.join(source, filename), os.path.join(destination, caption + ".mp4"))
-            print(f"Moved {filename} to {destination}")
+            video_path = os.path.join(source, filename)
+            category, caption = classify(video_path)
+            print(f"Category: {category}, Caption: {caption}")
+
+            dest_folder = os.path.join(destination, category)
+            if not os.path.exists(dest_folder):
+                os.makedirs(dest_folder)
+
+            shutil.move(video_path, os.path.join(dest_folder, caption + ".mp4"))
+            print(f"Moved {filename} to {dest_folder}")
 
 def download_instagram_reel(url):
     import instaloader
