@@ -32,13 +32,11 @@ def process(folders):
     f"✅ Processing complete. File at {url}"
 )
     
-
 def check():
     folders = get_folders_with_5_videos()
     if folders:
         print(f"Processing folders: {folders}")
         process(folders)
-
 
 
 async def main():
@@ -56,7 +54,12 @@ async def main():
         
         if signal == "PROCESS":
             print("🚀 Signal received from bot. Processing...")
-            await asyncio.to_thread(check)
+            try:
+                await asyncio.to_thread(check)
+            except Exception as e:
+                print(f"❌ Error during processing: {e}")
+                import traceback
+                traceback.print_exc()
 
 if __name__ == "__main__":
     asyncio.run(main())
