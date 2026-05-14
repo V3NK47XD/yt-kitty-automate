@@ -73,14 +73,17 @@ def remove_audio(video_path):
 
 def classify(video):
 
-    categories = os.getenv("CATEGORIES").split(",")
+    categories_env = os.getenv("CATEGORIES")
+    if not categories_env:
+        raise Exception("CATEGORIES environment variable is not set")
+    categories = categories_env.split(",")
     categories = [c.strip() for c in categories]
 
     print("Available categories:", categories)
 
     prompt = f"""
 You are a classifier and video describer. AND FOLLOW STRICT INSTUCTION. OUPUT ONLY JSON AND NOTHING ELSE.
-Make a high descriptive caption for the given video. And add a bit of humor, or make the caption catchy. Strict 2 word caption limit.
+Make a high descriptive caption for the given video. And add a bit of humor, or make the caption catchy. Strict 2 word caption limit. Do not use any special characters or symbols in the caption as it will be used as a filename.
 
 Choose ONE category from this list:
 {categories}

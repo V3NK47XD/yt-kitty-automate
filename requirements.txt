@@ -4,3 +4,4 @@ instaloader
 ffmpeg-python
 python-dotenv
 Flask
+yt-dlp
