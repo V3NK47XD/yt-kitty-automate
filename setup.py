@@ -3,7 +3,6 @@ import sys
 import platform
 import subprocess
 
-
 def get_os():
     """Detect the current operating system."""
     system = platform.system().lower()
